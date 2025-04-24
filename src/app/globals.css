@@ -1,0 +1,584 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+/* BookXon Color Palette & Gradient Theme */
+:root {
+  /* BookXon Palette */
+  --bx-primary: #006e5e;          /* Primary Green */
+  --bx-primary-hover: #005a4d;    /* Darker Primary Green */
+  --bx-secondary: #f0fdfa;        /* Very Light Green/Cyan Tint */
+  --bx-secondary-hover: #ccfbf1;  /* Slightly darker tint */
+  --bx-accent: #0be6c5;           /* Bright Cyan/Green Tint */
+  --bx-accent-hover: #0aa38f;     /* Slightly darker accent */
+  --bx-dark: #001f1a;             /* Dark Green/Teal */
+  --bx-on-primary: #ffffff;       /* Text on Primary */
+
+  /* Gradient Definition */
+  --gradient-start: var(--bx-primary);
+  --gradient-end: var(--bx-accent);
+  --gradient-hover-start: var(--bx-primary-hover);
+  --gradient-hover-end: var(--bx-accent-hover);
+
+  /* Standard Text & Backgrounds */
+  --text-primary: #1f2937;       /* Gray-800 */
+  --text-secondary: #4b5563;     /* Gray-600 */
+  --text-light: #f9fafb;         /* Gray-50 */
+  --border-color: #e5e7eb;       /* Gray-200 */
+  --bg-light: var(--bx-secondary); /* Use BookXon secondary for light bg */
+  --bg-white: #ffffff;
+  --primary: #4F46E5; /* Note: This seems unused based on button styles */
+  --primary-hover: #4338CA; /* Note: This seems unused based on button styles */
+}
+
+html {
+  scroll-behavior: smooth !important;
+}
+
+body {
+  font-family: 'Inter', sans-serif !important;
+  background-color: var(--bg-white) !important;
+  color: var(--text-primary) !important;
+  line-height: 1.6 !important;
+  overflow-x: hidden !important; /* Prevent horizontal scroll */
+  -webkit-font-smoothing: antialiased !important;
+  -moz-osx-font-smoothing: grayscale !important;
+  min-height: 100vh !important;
+}
+
+/* --- Headings --- */
+h1, h2, h3 {
+  font-weight: 700 !important; /* Bold */
+  color: var(--text-primary) !important;
+}
+
+h4, h5, h6 {
+  font-weight: 600 !important; /* Semibold */
+  color: var(--text-primary) !important;
+}
+
+h1 {
+  @apply text-4xl md:text-5xl lg:text-6xl leading-tight;
+}
+
+h2 {
+  @apply text-3xl md:text-4xl leading-tight;
+}
+
+h3 {
+  @apply text-2xl md:text-3xl;
+}
+
+/* --- Professional Button Styles --- */
+.pro-button {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 0.75rem 1.75rem !important; /* py-3 px-7 */
+  border-radius: 0.5rem !important; /* rounded-lg */
+  font-weight: 600 !important; /* Semibold */
+  transition: all 0.3s ease !important;
+  cursor: pointer !important;
+  text-decoration: none !important;
+  border: 1px solid transparent !important;
+  white-space: nowrap !important; /* Prevent wrapping */
+}
+
+.pro-button:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Primary Button (Gradient) - Base */
+.pro-button-primary {
+  background-image: linear-gradient(to right, var(--gradient-start), var(--gradient-end)) !important;
+  color: var(--bx-on-primary) !important;
+  border: none !important;
+  /* Add shimmer-specific base requirements */
+  position: relative; /* Needed for absolute positioning of the pseudo-element */
+  overflow: hidden; /* Hide the pseudo-element when it's outside the button bounds */
+}
+
+.pro-button-primary:hover {
+  background-image: linear-gradient(to right, var(--gradient-hover-start), var(--gradient-hover-end)) !important;
+  /* Hover styles from .pro-button already apply transform/shadow */
+}
+
+/* Secondary Button (Outline) */
+.pro-button-secondary {
+  background-color: var(--bg-white) !important;
+  color: var(--gradient-start) !important;
+  border: 1px solid var(--gradient-start) !important;
+}
+
+.pro-button-secondary:hover {
+  background-color: var(--bx-secondary-hover) !important;
+  border-color: var(--gradient-hover-start) !important;
+  color: var(--gradient-hover-start) !important;
+  /* Hover styles from .pro-button already apply transform/shadow */
+}
+
+/* --- Enhanced Shimmer Animation --- */
+
+/* Define the shimmer animation */
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%); /* Start off-screen to the left */
+  }
+  100% {
+    transform: translateX(100%); /* Move fully across to the right */
+  }
+}
+
+/* Style the shimmering pseudo-element for primary buttons */
+.pro-button-primary::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 200%; /* Make it wider than the button */
+  height: 100%;
+  /* Define the shimmer gradient (more opaque white for prominence) */
+  background: linear-gradient(
+    100deg,
+    rgba(255, 255, 255, 0) 20%,
+    rgba(255, 255, 255, 0.6) 50%, /* Increased opacity for shimmer intensity */
+    rgba(255, 255, 255, 0) 80%
+  );
+  /* Apply the animation (faster, smoother timing) */
+  animation: shimmer 1.8s infinite ease-in-out; /* Faster duration, ease-in-out timing */
+  /* Ensure it's above the main background but below the text */
+  z-index: 1;
+  pointer-events: none; /* Make sure it doesn't interfere with clicks */
+}
+
+/* Ensure button text/children are above the shimmer */
+.pro-button-primary > * {
+  position: relative; /* Create a stacking context */
+  z-index: 2; /* Ensure children are above the ::after pseudo-element */
+}
+
+/* Apply shimmer to Link components styled as primary buttons */
+a.pro-button-primary {
+  /* Ensure necessary positioning context and overflow for pseudo-element */
+  position: relative;
+  overflow: hidden;
+}
+
+a.pro-button-primary::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 200%;
+  height: 100%;
+  /* Use the same updated shimmer gradient */
+  background: linear-gradient(
+    100deg,
+    rgba(255, 255, 255, 0) 20%,
+    rgba(255, 255, 255, 0.6) 50%, /* Increased opacity */
+    rgba(255, 255, 255, 0) 80%
+  );
+  /* Use the same updated animation settings */
+  animation: shimmer 1.8s infinite ease-in-out; /* Faster duration, ease-in-out timing */
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* Ensure link children are above the shimmer */
+a.pro-button-primary > * {
+    position: relative;
+    z-index: 2;
+}
+
+/* --- End Shimmer Animation --- */
+
+
+/* --- Gradient Text Utility --- */
+.text-gradient {
+  background: linear-gradient(to right, var(--gradient-start), var(--gradient-end)) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  background-clip: text !important;
+  color: transparent !important;
+}
+
+/* --- Sticky Header --- */
+.sticky-header {
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 50 !important;
+  background-color: rgba(255, 255, 255, 0.85) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  border-bottom: 1px solid var(--border-color) !important;
+  transition: box-shadow 0.2s ease !important;
+}
+
+/* Add shadow on scroll */
+body.scrolled .sticky-header {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05) !important;
+}
+
+/* --- Section styling --- */
+section {
+  @apply py-12 md:py-16 lg:py-20 px-4 sm:px-6 lg:px-8;
+}
+
+/* Specific background colors for sections */
+#features {
+  background-color: var(--bg-light) !important;
+}
+
+#how-it-works {
+  background-color: var(--bg-light) !important;
+}
+
+/* --- Container styling --- */
+.container {
+  @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full;
+}
+
+/* --- Feature card styling --- */
+.feature-card {
+  @apply bg-white p-6 rounded-lg shadow-md border border-gray-100 h-full transition-all duration-300 hover:shadow-lg hover:-translate-y-1;
+}
+
+/* --- Icon Feature --- */
+.icon-feature {
+  width: 2.5rem !important;
+  height: 2.5rem !important;
+  margin-bottom: 1rem !important;
+  color: var(--gradient-start) !important;
+}
+
+/* --- FAQ Accordion Styling --- */
+.faq-item details > summary {
+  list-style: none !important;
+  cursor: pointer !important;
+  padding: 1.5rem 0.5rem !important;
+  font-weight: 600 !important;
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  transition: background-color 0.2s ease !important;
+}
+
+.faq-item details > summary:hover {
+  background-color: var(--bx-secondary) !important;
+}
+
+.faq-item details > summary::-webkit-details-marker {
+  display: none !important;
+}
+
+.faq-item details > summary .faq-icon {
+  transition: transform 0.3s ease-in-out !important;
+  color: var(--gradient-start) !important;
+  font-weight: bold !important;
+  font-size: 1.3em !important;
+  line-height: 1 !important;
+}
+
+.faq-item details[open] > summary .faq-icon {
+  transform: rotate(45deg) !important;
+}
+
+.faq-item details > div {
+  padding: 0.5rem 0.5rem 1.5rem 1rem !important;
+  color: var(--text-secondary) !important;
+  font-size: 0.95rem !important;
+  line-height: 1.7 !important;
+  border-left: 2px solid var(--gradient-start) !important;
+  margin-left: 0.5rem !important;
+}
+
+.faq-item {
+  border-bottom: 1px solid var(--border-color) !important;
+}
+
+.faq-item:last-child {
+  border-bottom: none !important;
+}
+
+/* --- Scroll Animation --- */
+.reveal-on-scroll {
+  opacity: 0 !important;
+  transform: translateY(40px) !important;
+  transition: opacity 0.7s cubic-bezier(0.645, 0.045, 0.355, 1), transform 0.7s cubic-bezier(0.645, 0.045, 0.355, 1) !important;
+}
+
+.reveal-on-scroll.is-visible {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+}
+
+/* Add a simple class to force visibility if JS fails */
+.page-loaded .reveal-on-scroll {
+  visibility: visible !important;
+}
+
+/* Style links properly on all pages */
+a {
+  @apply text-bx-primary transition-colors;
+}
+a:hover {
+    color: var(--bx-primary-hover);
+}
+
+
+ul, ol {
+  @apply pl-6;
+}
+
+ul li {
+  @apply mb-2;
+}
+
+/* Rest of your existing CSS */
+@layer base {
+  body {
+    @apply text-text-primary bg-white;
+    font-family: 'Inter', sans-serif;
+  }
+
+  /* Make sure the animations don't run until JS is loaded */
+  body:not(.page-loaded) .reveal-on-scroll {
+    visibility: hidden;
+  }
+
+  /* For sticky header behavior */
+  body.scrolled .sticky-header {
+    @apply shadow-md bg-white/95 backdrop-blur-sm;
+  }
+
+  /* Basic layout structure to prevent vertical stacking */
+  main {
+    @apply flex flex-col items-stretch;
+  }
+
+  section {
+    @apply py-12 md:py-16 lg:py-20 px-4 sm:px-6 lg:px-8;
+  }
+
+  /* Section backgrounds */
+  #features {
+    background-color: var(--bx-secondary);
+  }
+
+  #how-it-works {
+    background-color: var(--bx-secondary);
+  }
+
+  h1 {
+    @apply text-4xl md:text-5xl lg:text-6xl font-bold leading-tight;
+  }
+
+  h2 {
+    @apply text-3xl md:text-4xl font-bold leading-tight;
+  }
+
+  h3 {
+    @apply text-2xl md:text-3xl font-bold;
+  }
+
+  /* Improved mobile tap targets */
+  button, a.pro-button, a.pro-button-primary, a.pro-button-secondary { /* Apply to links styled as buttons too */
+    @apply min-h-[44px] min-w-[44px];
+  }
+
+  /* Better form element spacing on mobile */
+  input, select, textarea {
+    @apply p-3 md:p-4;
+  }
+}
+
+@layer components {
+  .bg-pattern {
+    background-image: url('data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%23ffffff\' fill-opacity=\'1\'%3E%3Cpath d=\'M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');
+  }
+
+  /* Scroll reveal animations */
+  .reveal-on-scroll {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.7s cubic-bezier(0.645, 0.045, 0.355, 1), transform 0.7s cubic-bezier(0.645, 0.045, 0.355, 1);
+  }
+
+  .reveal-on-scroll.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Add a simple class to force visibility if JS fails */
+  .page-loaded .reveal-on-scroll {
+    visibility: visible;
+  }
+
+  /* Feature icon styling */
+  .icon-feature {
+    @apply w-10 h-10 flex items-center justify-center text-bx-primary mb-4;
+  }
+
+  /* Animation keyframes */
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  .animate-fade-in {
+    animation: fadeIn 0.6s ease-out forwards;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-20px); }
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Card and interaction styling */
+  .card-hover {
+    @apply transition-all duration-300 hover:shadow-lg hover:-translate-y-1;
+  }
+
+  .button-hover { /* Note: This class seems unused, .pro-button:hover handles hover */
+    @apply transition-all duration-300 hover:scale-105 active:scale-95;
+  }
+
+  .image-hover {
+    @apply transition-all duration-300 hover:brightness-110;
+  }
+
+  .link-hover { /* Note: Base 'a:hover' handles link hover */
+    @apply transition-colors duration-200 hover:text-bx-primary;
+  }
+
+  .gradient-hover { /* Note: .pro-button-primary:hover handles gradient hover */
+    @apply hover:bg-gradient-primary-hover;
+  }
+
+  /* Button Styling (Consolidated) */
+  /* Base .pro-button styles are defined outside layers */
+  .pro-button-primary {
+    /* Base styles defined outside layers */
+    /* Shimmer styles defined outside layers */
+    @apply shadow-sm; /* Add shadow from original component layer */
+  }
+  .pro-button-primary:hover {
+     /* Hover styles defined outside layers */
+     @apply shadow-md; /* Add hover shadow from original component layer */
+  }
+
+  .pro-button-secondary {
+     /* Base styles defined outside layers */
+     @apply shadow-sm border border-gray-200; /* Add shadow/border from original component layer */
+     /* Overwrite text color from original component layer if needed */
+     /* color: var(--text-primary); */ /* Uncomment if needed, but current uses --gradient-start */
+  }
+   .pro-button-secondary:hover {
+      /* Hover styles defined outside layers */
+      @apply shadow-md; /* Add hover shadow from original component layer */
+   }
+
+  .bg-gradient-primary { /* Utility class for gradient */
+    background: linear-gradient(to right, var(--gradient-start), var(--gradient-end));
+  }
+
+  /* Card styling */
+  .feature-card {
+    @apply bg-white p-6 rounded-lg shadow-md border border-gray-100 h-full transition-all duration-300 hover:shadow-lg hover:-translate-y-1;
+  }
+
+  .pricing-card {
+    @apply bg-white rounded-xl border border-gray-200 shadow-md h-full flex flex-col p-8;
+  }
+
+  .pricing-card-highlight {
+    @apply shadow-lg border-bx-accent;
+  }
+
+  .testimonial-slide {
+    @apply p-4;
+  }
+
+  /* Mobile menu styling */
+  .mobile-menu-closed {
+    @apply max-h-0 opacity-0 invisible transition-all duration-300 ease-in-out;
+  }
+
+  .mobile-menu-open {
+    @apply max-h-96 opacity-100 visible transition-all duration-300 ease-in-out;
+  }
+
+  /* Section layout styling */
+  .section-container {
+    @apply max-w-7xl mx-auto w-full;
+  }
+
+  .section-grid {
+    @apply grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 lg:gap-16;
+  }
+
+  .section-flex {
+    @apply flex flex-col md:flex-row;
+  }
+}
+
+@layer utilities {
+  .container {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full;
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Perspective utilities for 3D effects */
+  .perspective-1000 {
+    perspective: 1000px;
+  }
+
+  .rotate-y-10 {
+    transform: rotateY(10deg);
+  }
+
+  @screen md {
+    .md\:hover\:scale-105:hover {
+      transform: scale(1.05);
+    }
+  }
+
+  @screen lg {
+    .lg\:hover\:scale-110:hover {
+      transform: scale(1.1);
+    }
+  }
+}
+
+/* Additional utilities for no-shadow images */
+.no-shadow {
+  box-shadow: none !important;
+}
+
+/* For elements with a gradient background */
+.gradient-bg {
+  background: linear-gradient(to right, var(--gradient-start), var(--gradient-end));
+}
+
+.pro-button-primary:hover::before, /* Or ::after if that's used for the shimmer */
+.pro-button-primary:hover::after { /* Add this line if both might be used or unsure */
+  animation: none !important; /* Use !important to ensure override */
+}
